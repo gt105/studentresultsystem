@@ -1,0 +1,35 @@
+students = []
+
+def add_student():
+    name = input("Enter student name: ")
+    marks = []
+    for i in range(1, 4):
+        mark = float(input(f"Enter marks for subject {i}: "))
+        marks.append(mark)
+    students.append({"name": name, "marks": marks})
+    print(f"Student {name} added successfully!")
+
+def view_results():
+    if not students:
+        print("No students added yet!")
+        return
+    for s in students:
+        total = sum(s['marks'])
+        average = total / len(s['marks'])
+        print(f"{s['name']} - Marks: {s['marks']} | Total: {total} | Average: {average:.2f}")
+
+def main():
+    while True:
+        print("\n1. Add Student\n2. View Results\n3. Exit")
+        choice = input("Enter choice: ")
+        if choice == "1":
+            add_student()
+        elif choice == "2":
+            view_results()
+        elif choice == "3":
+            break
+        else:
+            print("Invalid choice!")
+
+if __name__ == "__main__":
+    main()
