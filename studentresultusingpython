@@ -2,6 +2,14 @@
 import json
 from typing import List, Dict
 
+STUDENTS_FILE = "students.json"
+
+# Load students from file at startup
+=======
+
+import json
+from typing import List, Dict
+
 =======
 
 from typing import List, Dict
@@ -17,12 +25,17 @@ from typing import List, Dict
 
 STUDENTS_FILE = "students.json"
 
+
 def load_students() -> List[Dict[str, List[float]]]:
     try:
         with open(STUDENTS_FILE, "r") as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return []
+
+
+# Save students to file
+=======
 
 def save_students(students: List[Dict[str, List[float]]]) -> None:
     with open(STUDENTS_FILE, "w") as f:
@@ -32,7 +45,11 @@ students: List[Dict[str, List[float]]] = load_students()
 
 def add_student() -> None:
 
+   """Add a new student with marks for 3 subjects."""
 =======
+
+=======
+
 
 
     name = input("Enter student name: ").strip()
@@ -59,6 +76,14 @@ def add_student() -> None:
     print(f"Student {name} added successfully!\n")
 
 def view_results() -> None:
+    """Display all students with their marks, total, and average."""
+=======
+
+    students.append({"name": name, "marks": marks})
+    save_students(students)
+    print(f"Student {name} added successfully!\n")
+
+def view_results() -> None:
 =======
     
     students.append({"name": name, "marks": marks})
@@ -75,17 +100,21 @@ def view_results() -> None:
 def view_results() -> None:
 
 
+
     if not students:
         print("No students added yet!\n")
         return
 
     print("\n=== Student Results ===")
 
+=======
+
     for idx, s in enumerate(students, start=1):
         total = sum(s['marks'])
         average = total / len(s['marks'])
         marks_str = ", ".join(f"{m:.2f}" for m in s['marks'])
 =======
+
 
     for s in students:
         total = sum(s['marks'])
@@ -100,6 +129,8 @@ def main() -> None:
         "1": add_student,
         "2": view_results,
         "3": lambda: print("Exiting program. Goodbye!")
+
+=======
 =======
     for idx, s in enumerate(students, start=1):
         total = sum(s['marks'])
@@ -108,6 +139,7 @@ def main() -> None:
 
         print(f"{idx}. {s['name']} - Marks: [{marks_str}] | Total: {total:.2f} | Average: {average:.2f}")
     print()
+
 
 def update_student() -> None:
     if not students:
@@ -199,12 +231,16 @@ def main() -> None:
         "6": lambda: print("Exiting program. Goodbye!")
 
 
+
     }
 
     while True:
         print("\n=== Student Management Menu ===")
         print("1. Add Student")
         print("2. View Results")
+
+        print("3. Exit")
+=======
 
         print("3. Update Student Marks")
         print("4. Delete Student")
@@ -219,10 +255,15 @@ def main() -> None:
         print("6. Exit")
 
 >>>>>>..
+
         choice = input("Enter your choice: ").strip()
 
         action = menu_options.get(choice)
         if action:
+
+            action()
+            if choice == "3":
+=======
             actio
 
             if choice == "5":
@@ -231,6 +272,7 @@ def main() -> None:
             if choice == "3":
 =======
             if choice == "6":
+
 
 
                 break
