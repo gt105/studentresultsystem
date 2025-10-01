@@ -1,3 +1,11 @@
+
+from typing import List, Dict
+
+students: List[Dict[str, List[float]]] = []
+
+def add_student() -> None:
+    """Add a new student with marks for 3 subjects."""
+=======
 import json
 from typing import List, Dict
 
@@ -17,6 +25,7 @@ def save_students(students: List[Dict[str, List[float]]]) -> None:
 students: List[Dict[str, List[float]]] = load_students()
 
 def add_student() -> None:
+
     name = input("Enter student name: ").strip()
     if not name:
         print("Student name cannot be empty!")
@@ -35,16 +44,40 @@ def add_student() -> None:
             except ValueError:
                 print("Invalid input! Please enter a numeric value.")
 
+    
+    students.append({"name": name, "marks": marks})
+    print(f"Student {name} added successfully!\n")
+
+def view_results() -> None:
+    """Display all students with their marks, total, and average."""
+=======
+
     students.append({"name": name, "marks": marks})
     save_students(students)
     print(f"Student {name} added successfully!\n")
 
 def view_results() -> None:
+
     if not students:
         print("No students added yet!\n")
         return
 
     print("\n=== Student Results ===")
+
+    for s in students:
+        total = sum(s['marks'])
+        average = total / len(s['marks'])
+        marks_str = ", ".join(f"{m:.2f}" for m in s['marks'])
+        print(f"{s['name']} - Marks: [{marks_str}] | Total: {total:.2f} | Average: {average:.2f}")
+    print()
+
+def main() -> None:
+    """Main menu loop."""
+    menu_options = {
+        "1": add_student,
+        "2": view_results,
+        "3": lambda: print("Exiting program. Goodbye!")
+=======
     for idx, s in enumerate(students, start=1):
         total = sum(s['marks'])
         average = total / len(s['marks'])
@@ -134,22 +167,31 @@ def main() -> None:
         "4": delete_student,
         "5": class_analytics,
         "6": lambda: print("Exiting program. Goodbye!")
+
     }
 
     while True:
         print("\n=== Student Management Menu ===")
         print("1. Add Student")
         print("2. View Results")
+
+        print("3. Exit")
+=======
         print("3. Update Student Marks")
         print("4. Delete Student")
         print("5. Class Analytics")
         print("6. Exit")
+
         choice = input("Enter your choice: ").strip()
 
         action = menu_options.get(choice)
         if action:
             action()
+
+            if choice == "3":
+=======
             if choice == "6":
+
                 break
         else:
             print("Invalid choice! Please try again.\n")
