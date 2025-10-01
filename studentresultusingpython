@@ -1,4 +1,9 @@
 
+import json
+from typing import List, Dict
+
+=======
+
 from typing import List, Dict
 
 students: List[Dict[str, List[float]]] = []
@@ -8,6 +13,7 @@ def add_student() -> None:
 =======
 import json
 from typing import List, Dict
+
 
 STUDENTS_FILE = "students.json"
 
@@ -25,6 +31,9 @@ def save_students(students: List[Dict[str, List[float]]]) -> None:
 students: List[Dict[str, List[float]]] = load_students()
 
 def add_student() -> None:
+
+=======
+
 
     name = input("Enter student name: ").strip()
     if not name:
@@ -44,6 +53,13 @@ def add_student() -> None:
             except ValueError:
                 print("Invalid input! Please enter a numeric value.")
 
+
+    students.append({"name": name, "marks": marks})
+    save_students(students)
+    print(f"Student {name} added successfully!\n")
+
+def view_results() -> None:
+=======
     
     students.append({"name": name, "marks": marks})
     print(f"Student {name} added successfully!\n")
@@ -58,11 +74,18 @@ def view_results() -> None:
 
 def view_results() -> None:
 
+
     if not students:
         print("No students added yet!\n")
         return
 
     print("\n=== Student Results ===")
+
+    for idx, s in enumerate(students, start=1):
+        total = sum(s['marks'])
+        average = total / len(s['marks'])
+        marks_str = ", ".join(f"{m:.2f}" for m in s['marks'])
+=======
 
     for s in students:
         total = sum(s['marks'])
@@ -82,6 +105,7 @@ def main() -> None:
         total = sum(s['marks'])
         average = total / len(s['marks'])
         marks_str = ", ".join(f"{m:.2f}" for m in s['marks'])
+
         print(f"{idx}. {s['name']} - Marks: [{marks_str}] | Total: {total:.2f} | Average: {average:.2f}")
     print()
 
@@ -106,7 +130,7 @@ def update_student() -> None:
                         else:
                             print("Marks should be between 0 and 100.")
                     except ValueError:
-                        print("Invalid input! Please enter a numeric value.")
+                        print("Invalid input! Please enter a numericmaiue.")
             save_students(students)
             print(f"{student['name']}'s marks updated successfully!\n")
         else:
@@ -131,6 +155,8 @@ def delete_student() -> None:
     except ValueError:
         print("Invalid input! Please enter a number.\n")
 
+
+=======
 def class_analytics() -> None:
     if not students:
         print("No students added yet!\n")
@@ -159,14 +185,19 @@ def class_analytics() -> None:
         print(f"{rank}. {s['name']} - Total: {sum(s['marks']):.2f} | Average: {sum(s['marks'])/3:.2f}")
     print()
 
+
 def main() -> None:
-    menu_options = {
+    menu_options =
         "1": add_student,
         "2": view_results,
         "3": update_student,
         "4": delete_student,
+
+        "5": lambda: print("Exiting program. Goodbye!")
+=======
         "5": class_analytics,
         "6": lambda: print("Exiting program. Goodbye!")
+
 
     }
 
@@ -175,6 +206,11 @@ def main() -> None:
         print("1. Add Student")
         print("2. View Results")
 
+        print("3. Update Student Marks")
+        print("4. Delete Student")
+        print("5. Exit")
+=======
+
         print("3. Exit")
 =======
         print("3. Update Student Marks")
@@ -182,15 +218,20 @@ def main() -> None:
         print("5. Class Analytics")
         print("6. Exit")
 
+>>>>>>..
         choice = input("Enter your choice: ").strip()
 
         action = menu_options.get(choice)
         if action:
-            action()
+            actio
+
+            if choice == "5":
+=======
 
             if choice == "3":
 =======
             if choice == "6":
+
 
                 break
         else:
