@@ -1,35 +1,83 @@
-students = []
+import json
+from typing import List, Dict
 
-def add_student():
-    name = input("Enter student name: ")
-    marks = []
-    for i in range(1, 4):
-        mark = float(input(f"Enter marks for subject {i}: "))
-        marks.append(mark)
-    students.append({"name": name, "marks": marks})
-    print(f"Student {name} added successfully!")
+STUDENTS_FILE = "students.json"
 
-def view_results():
-    if not students:
-        print("No students added yet!")
+# Load students from file at startup
+def load_students() -> List[Dict[str, List[float]]]:
+    try:
+        with open(STUDENTS_FILE, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+# Save students to file
+def save_students(students: List[Dict[str, List[float]]]) -> None:
+    with open(STUDENTS_FILE, "w") as f:
+        json.dump(students, f, indent=4)
+
+students: List[Dict[str, List[float]]] = load_students()
+
+def add_student() -> None:
+    """Add a new student with marks for 3 subjects."""
+    name = input("Enter student name: ").strip()
+    if not name:
+        print("Student name cannot be empty!")
         return
+
+    marks: List[float] = []
+    for i in range(1, 4):
+        while True:
+            try:
+                mark = float(input(f"Enter marks for subject {i} (0-100): ").strip())
+                if 0 <= mark <= 100:
+                    marks.append(mark)
+                    break
+                else:
+                    print("Marks should be between 0 and 100.")
+            except ValueError:
+                print("Invalid input! Please enter a numeric value.")
+
+    students.append({"name": name, "marks": marks})
+    save_students(students)
+    print(f"Student {name} added successfully!\n")
+
+def view_results() -> None:
+    """Display all students with their marks, total, and average."""
+    if not students:
+        print("No students added yet!\n")
+        return
+
+    print("\n=== Student Results ===")
     for s in students:
         total = sum(s['marks'])
         average = total / len(s['marks'])
-        print(f"{s['name']} - Marks: {s['marks']} | Total: {total} | Average: {average:.2f}")
+        marks_str = ", ".join(f"{m:.2f}" for m in s['marks'])
+        print(f"{s['name']} - Marks: [{marks_str}] | Total: {total:.2f} | Average: {average:.2f}")
+    print()
 
-def main():
+def main() -> None:
+    """Main menu loop."""
+    menu_options = {
+        "1": add_student,
+        "2": view_results,
+        "3": lambda: print("Exiting program. Goodbye!")
+    }
+
     while True:
-        print("\n1. Add Student\n2. View Results\n3. Exit")
-        choice = input("Enter choice: ")
-        if choice == "1":
-            add_student()
-        elif choice == "2":
-            view_results()
-        elif choice == "3":
-            break
+        print("\n=== Student Management Menu ===")
+        print("1. Add Student")
+        print("2. View Results")
+        print("3. Exit")
+        choice = input("Enter your choice: ").strip()
+
+        action = menu_options.get(choice)
+        if action:
+            action()
+            if choice == "3":
+                break
         else:
-            print("Invalid choice!")
+            print("Invalid choice! Please try again.\n")
 
 if __name__ == "__main__":
     main()
